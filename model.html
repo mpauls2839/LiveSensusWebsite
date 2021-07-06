@@ -1,0 +1,381 @@
+<!DOCTYPE HTML>
+<!--
+	Projection by TEMPLATED
+	test audio #1 page for the survey
+-->
+<html>
+	<head>
+		<title>LiveSensus | Metrics</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="apple-touch-icon" sizes="57x57" href="assets/ico/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="assets/ico/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="assets/ico/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="assets/ico/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="assets/ico/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="assets/ico/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="assets/ico/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="assets/ico/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="assets/ico/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="assets/ico/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="assets/ico/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="assets/ico/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="assets/ico/favicon-16x16.png">
+		<link rel="manifest" href="assets/ico/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="assets/ico/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+		<link rel="stylesheet" href="assets/css/audio.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.24.min.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+	</head>
+	<body class="subpage">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a class="logo"><strong>LiveSensus</strong> Survey</a>
+				</div>
+			</header>
+
+		<!-- Three -->
+			<section id="three" class="wrapper">
+				<div class="inner">
+					<header class="align-center">
+						<h2>Model Performance</h2>
+						<p><strong>Below are some Metrics</strong></p>
+
+						<h4>Stage 2 Metrics</h4>
+
+							<center><div id="linear_chart" style="max-width: 25cm; max-height: 25cm;"></div></center>
+
+						<div class="table-wrapper">
+							<table class="alt">
+								<thead>
+									<tr>
+										<th>Approach</th>
+										<th>Total MSE</th>
+										<th>MSE For 1-2</th>
+										<th>MSE For 2-3</th>
+										<th>MSE For 3-4</th>
+										<th>MSE For 4-5</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Linear Regression</td>
+										<td id="linear_mse"></td>
+										<td id="linear_mse1"></td>
+										<td id="linear_mse2"></td>
+										<td id="linear_mse3"></td>
+										<td id="linear_mse4"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+						<div class="table-wrapper">
+							<table class="alt">
+								<thead>
+									<tr>
+										<th>Approach</th>
+										<th>MSE For Network Interruptions</th>
+										<th>MSE For Background Noise</th>
+										<th>MSE For Echo</th>
+										<th>MSE For Dynamic Range Compression</th>
+										<th>MSE For Vocal Interruptions</th>
+									</tr>
+								</thead>
+								<tbody>
+									<tr>
+										<td>Linear Regression</td>
+										<td id="linear_mse_network"></td>
+										<td id="linear_mse_background"></td>
+										<td id="linear_mse_echo"></td>
+										<td id="linear_mse_bandwidth"></td>
+										<td id="linear_mse_latency"></td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+
+
+						<center><div id="softmax_chart" ></div></center>
+									<p id="softmax_mse"></p>
+									<p id="softmax_r2"></p>
+
+
+						<center><div id="svm_chart"></div></center>
+							<p id="svm_mse"></p>
+							<p id="svm_r2"></p>
+
+
+						<div class="table-wrapper">
+							<table class="alt">
+								<thead>
+									<tr>
+										<th>Other Approaches</th>
+										<th>MSE</th>
+										<th>MAE</th>
+										<th>R-Squared Coorelation</th>
+									</tr>
+								</thead>
+								<tbody>
+
+									<tr>
+										<td>NN Approach</td>
+										<td id="nn_mse"></td>
+										<td id="nn_mae"></td>
+										<td id="nn_r2"></td>
+									</tr>
+
+								</tbody>
+							</table>
+						</div>
+
+					</header>
+
+					<center><h4>Stage 1 Metrics</h4></center>
+					<div class="row">
+						<section class="6u 12u$(medium)">
+							<center><h4>Echo Detection</h4></center>
+							<div class="table-wrapper">
+								<table class="alt">
+
+									<tbody>
+										<tr>
+											<td></td>
+											<td><strong>True Echo</strong></td>
+											<td><strong>True Negative</strong></td>
+										</tr>
+										<tr>
+											<td><strong>Predicted Echo</strong></td>
+											<td id="echo_true_pos"></td>
+											<td id="echo_false_pos"></td>
+										</tr>
+										<tr>
+											<td><strong>Predicted Negative</strong></td>
+											<td id="echo_false_neg"></td>
+											<td id="echo_true_neg"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</section>
+						<section class="6u 12u$(medium)">
+							<center><h4>PacketLoss Detection</h4></center>
+							<div class="table-wrapper">
+								<table class="alt">
+
+									<tbody>
+										<tr>
+											<td></td>
+											<td><strong>True PacketLoss</strong></td>
+											<td><strong>True Negative</strong></td>
+										</tr>
+										<tr>
+											<td><strong>Predicted PacketLoss</strong></td>
+											<td id="pl_true_pos"></td>
+											<td id="pl_false_pos"></td>
+										</tr>
+										<tr>
+											<td><strong>Predicted Negative</strong></td>
+											<td id="pl_false_neg"></td>
+											<td id="pl_true_neg"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</section>
+					</div>
+
+					<div class="row">
+						<section class="6u 12u$(medium)">
+							<center><h4>Dynamic Range Compression Detection</h4></center>
+							<div class="table-wrapper">
+								<table class="alt">
+
+									<tbody>
+										<tr>
+											<td></td>
+											<td><strong>True Compression</strong></td>
+											<td><strong>True Negative</strong></td>
+										</tr>
+										<tr>
+											<td><strong>Predicted Compression</strong></td>
+											<td id="band_true_pos"></td>
+											<td id="band_false_pos"></td>
+										</tr>
+										<tr>
+											<td><strong>Predicted Negative</strong></td>
+											<td id="band_false_neg"></td>
+											<td id="band_true_neg"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</section>
+						<section class="6u 12u$(medium)">
+							<center><h4>Background Noise Detection</h4></center>
+							<div class="table-wrapper">
+								<table class="alt">
+
+									<tbody>
+										<tr>
+											<td></td>
+											<td><strong>True Noise</strong></td>
+											<td><strong>True Negative</strong></td>
+										</tr>
+										<tr>
+											<td><strong>Predicted Noise</strong></td>
+											<td id="back_true_pos"></td>
+											<td id="back_false_pos"></td>
+										</tr>
+										<tr>
+											<td><strong>Predicted Negative</strong></td>
+											<td id="back_false_neg"></td>
+											<td id="back_true_neg"></td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</section>
+					</div>
+
+					<script type="text/javascript" >
+						var response;
+								var data = {
+									get: "True"
+								};
+								var xmlhttp = new XMLHttpRequest();
+								xmlhttp.open("GET", "https://rig6vh8vqe.execute-api.us-east-1.amazonaws.com/Production/getscores");
+								xmlhttp.setRequestHeader("Content-Type", "application/json");
+								xmlhttp.send(data);
+								xmlhttp.onreadystatechange = function() {
+									if (xmlhttp.readyState === 4) {
+										response = JSON.parse(xmlhttp.responseText);
+										if (xmlhttp.status === 200 ) {
+											console.log('successful');
+											console.log(response);
+
+											//console.log(response["message"]['linear_plot']);
+											document.getElementById("linear_mse").innerHTML = response["message"]['linear_mse'];
+											document.getElementById("linear_mse1").innerHTML = response["message"]['linear_mse1'];
+											document.getElementById("linear_mse2").innerHTML = response["message"]['linear_mse2'];
+											document.getElementById("linear_mse3").innerHTML = response["message"]['linear_mse3'];
+											document.getElementById("linear_mse4").innerHTML = response["message"]['linear_mse4'];
+											document.getElementById("linear_mse_network").innerHTML = response["message"]['linear_mse_network'];
+											document.getElementById("linear_mse_background").innerHTML = response["message"]['linear_mse_background'];
+											document.getElementById("linear_mse_echo").innerHTML = response["message"]['linear_mse_echo'];
+											document.getElementById("linear_mse_bandwidth").innerHTML = response["message"]['linear_mse_bandwidth'];
+											document.getElementById("linear_mse_latency").innerHTML = response["message"]['linear_mse_latency'];
+
+
+											document.getElementById("softmax_mse").innerHTML = "Softmax MSE: " + response["message"]['softmax_mse'];
+											document.getElementById("softmax_r2").innerHTML = "Softmax R Squared: " + response["message"]['softmax_r2'];
+
+											document.getElementById("svm_mse").innerHTML = "SVM MSE: " + response["message"]['svm_mse'];
+											document.getElementById("svm_r2").innerHTML = "SVM R Squared: " + response["message"]['svm_r2'];
+
+
+												google.charts.load('current', {'packages':['corechart']});
+									      google.charts.setOnLoadCallback(drawChartLin);
+									      function drawChartLin() {
+									        var data = google.visualization.arrayToDataTable(response["message"]['linear_plot']);
+									        var options = {
+									          title: 'Linear Regression Model',
+														hAxis: {title: 'True Score', minValue: 1, maxValue: 5},
+														vAxis: {title: 'Predicted Score', minValue: -1.5, maxValue: 5},
+									          legend: 'none',
+														chartArea: {
+												      // leave room for y-axis labels
+												      width: '85%',
+															height: '80%'
+												    },
+														width: 600,
+														height: 600
+									        };
+									        var chart = new google.visualization.ScatterChart(document.getElementById('linear_chart'));
+									        chart.draw(data, options);
+									      }
+
+
+												/*			google.charts.load('current', {'packages':['corechart']});
+												      google.charts.setOnLoadCallback(drawChartSoft);
+												      function drawChartSoft() {
+												        var data = google.visualization.arrayToDataTable(response["message"]['softmax_plot']);
+												        var options = {
+												          title: 'Softmax Classification Model',
+																	hAxis: {title: 'True Score', minValue: 1, maxValue: 5},
+																	vAxis: {title: 'Predicted Score', minValue: -2, maxValue: 5},
+												          legend: 'none'
+												        };
+												        var chart = new google.visualization.ScatterChart(document.getElementById('softmax_chart'));
+												        chart.draw(data, options);
+												      }
+
+
+																google.charts.load('current', {'packages':['corechart']});
+																google.charts.setOnLoadCallback(drawChartsvm);
+																function drawChartsvm() {
+																	var data = google.visualization.arrayToDataTable(response["message"]['svm_plot']);
+																	var options = {
+																		title: 'SVM Classification Model',
+																		hAxis: {title: 'True Score', minValue: 1, maxValue: 5},
+																		vAxis: {title: 'Predicted Score', minValue: 1, maxValue: 5},
+																		legend: 'none'
+																	};
+																	var chart = new google.visualization.ScatterChart(document.getElementById('svm_chart'));
+																	chart.draw(data, options);
+																}*/
+
+
+											document.getElementById("nn_mse").innerHTML = response["message"]['nn_mse'];
+											document.getElementById("nn_r2").innerHTML = response["message"]['nn_r2'];
+											document.getElementById("nn_mae").innerHTML = response["message"]['nn_mae'];
+
+											document.getElementById("echo_true_pos").innerHTML = response["message"]['echotp'];
+											document.getElementById("echo_false_pos").innerHTML = response["message"]['echofp'];
+											document.getElementById("echo_true_neg").innerHTML = response["message"]['echotn'];
+											document.getElementById("echo_false_neg").innerHTML = response["message"]['echofn'];
+
+											document.getElementById("pl_true_pos").innerHTML = response["message"]['pltp'];
+											document.getElementById("pl_false_pos").innerHTML = response["message"]['plfp'];
+											document.getElementById("pl_true_neg").innerHTML = response["message"]['pltn'];
+											document.getElementById("pl_false_neg").innerHTML = response["message"]['plfn'];
+
+										} else {
+												console.log('failed');
+										}
+									}
+								}
+
+			    </script>
+
+
+					<div class="box alt" style="padding-top:20px;">
+						<div class="row 100% uniform">
+							<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+							<div class="3u" ><span class="image fit"><img src="images/ECE_Logo_3.png" alt="" /></span></div>
+							<div class="3u" ><span class="image fit"><img src="images/c3sr.png" alt="" /></span></div>
+							<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+						</div>
+					</div>
+				</div>
+
+
+
+			</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

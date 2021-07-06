@@ -1,0 +1,228 @@
+<!DOCTYPE HTML>
+<!--
+	Projection by TEMPLATED
+	Training Audio sample page for the survey
+-->
+<html>
+	<head>
+		<title>LiveSensus | Survey</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<link rel="stylesheet" href="../assets/css/slide.css" />
+		<link rel="stylesheet" href="../assets/css/audio.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.24.min.js"></script>
+		<link rel="apple-touch-icon" sizes="57x57" href="../assets/ico/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="../assets/ico/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="../assets/ico/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="../assets/ico/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="../assets/ico/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="../assets/ico/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="../assets/ico/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="../assets/ico/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="../assets/ico/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="../assets/ico/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="../assets/ico/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="../assets/ico/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="../assets/ico/favicon-16x16.png">
+		<link rel="manifest" href="../assets/ico/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="../assets/ico/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+	</head>
+
+
+	<body class="subpage">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a class="logo"><strong>LiveSensus</strong> Survey</a>
+				</div>
+			</header>
+
+		<!-- Three -->
+			<section id="three" class="wrapper">
+				<div class="inner">
+					<header class="align-center">
+						<h2><u style="color:#6cc091;">Practice Audio #4 - Reverb and Echo</u></h2>
+						<p><strong>
+              <ul>The next few examples have reverb or echo which may reduce audio quality.</ul>
+							<ul>Please listen to each audio clip entirely.</ul>
+						</strong></p>
+
+						<p><strong>1. This is the reference audio WITHOUT reverb or echo</strong></p>
+
+
+
+                        <audio id="myAudio" class="align-center"  controls>
+                            <source id="asrc" src="" type = "audio/wav"> </source>
+
+                        Your browser does not support the audio element.
+                        </audio>
+
+
+
+                        <p><strong>
+                            2. This is the same audio with a SMALL amount of reverb or echo</strong></p>
+
+                        <audio id="myAudio_1" class="align-center"  controls>
+                            <source id="asrc_1" src="" type = "audio/wav"> </source>
+
+                        Your browser does not support the audio element.
+                        </audio>
+
+                        <p><strong>3. This is the same audio with a LARGE amount of reverb or echo</strong></p>
+
+                        <audio id="myAudio_2" class="align-center"  controls>
+                            <source id="asrc_2" src="" type = "audio/wav"> </source>
+
+                        Your browser does not support the audio element.
+                        </audio>
+
+
+                        <script>
+                            // Event listener for DOM
+                            document.addEventListener("DOMContentLoaded", theDOMHasLoaded, false);
+
+                            var first = document.getElementById('asrc');
+                            var second = document.getElementById('asrc_1');
+                            var third = document.getElementById('asrc_2');
+
+
+                            /* theDOMHasLoaded()
+                            * Execute when DOM is loaded */
+                            function theDOMHasLoaded(e) {
+
+                                // choose the sources
+																var blip3 = Math.floor((Math.random()*100));
+																if (blip3 <= 100){ //weighted average, add reverb later
+		                                blip3 = "ECHO";
+		                                localStorage.setItem('blip3', blip3);
+		                                localStorage.setItem('blip3Max', 351);
+																		//NASA/STAT400 Clips below
+																		var prob = 100*Math.floor(Math.random());
+																		var prob2 = 100*Math.floor(Math.random());
+																		var id;
+																		if (prob < 80){
+																			if (prob2 < 80){
+																				id = Math.floor((Math.random() * (767 - 664 + 1)) + 664);
+																			} else {
+																				id = Math.floor((Math.random() * (959 - 933 + 1)) + 933);
+																			}
+																		} else {
+																			if (prob2 < 80){
+																			  id = Math.floor((Math.random() * (659 - 636 + 1)) + 636);
+																			} else {
+																				id = Math.floor((Math.random() * (932 - 927 + 1)) + 927);
+																			}
+																		}
+																		console.log("id0: ", id);
+																		strID = "ECHO_" + id + ".wav"
+																		localStorage.setItem('audio3_0', strID);
+
+																		var prob0 = 100*Math.floor(Math.random());
+																		if (prob0 < 80){
+																			strID1 = "ECHO_" + Math.floor((Math.random()*352)) + ".wav"
+																		} else {
+																			strID1 = "ECHO_" + Math.floor((Math.random() * (855 - 768 + 1)) + 768) + ".wav"
+																		}
+
+																		localStorage.setItem('audio3_1', strID1);
+
+																		first.src = "../audio/1.2Train/VCC_229/Source.wav";
+		                                second.src = "../audio/1.2Train/VCC_229/ECHO_0.wav";
+		                                third.src = "../audio/1.2Train/VCC_229/ECHO_1.wav";
+		                            }
+																console.log(blip3);
+
+                                document.getElementById('myAudio').load();
+                                document.getElementById('myAudio_1').load();
+                                document.getElementById('myAudio_2').load();
+                             }
+
+                            /*
+                            <audio id="myAudio_2" class="align-center" preload="auto" controls>
+                            <source id="asrc_2" src=""> </source>
+
+                        Your browser does not support the audio element.
+                        </audio>
+
+                        <audio id="myAudio_3" class="align-center" preload="auto" controls>
+                            <source id="asrc_3" src=""> </source>
+
+                        Your browser does not support the audio element.
+                        </audio>
+                            */
+
+                        </script>
+					<center><strong><h4 ><span id="Audio Elasped" style="color:rgb(21, 146, 21)">0</span>  <span >/</span> <span id="Audio Percent" style="color:rgb(20, 85, 0)"><b>3 Audio Played </b></span><span > </span></h4></center>
+			</header>
+			<center><strong><p>You will again rate several audio samples. During the tests, the audio samples will only be playable ONE TIME</strong></p></center>
+					<center><p>Page 16/18</p></center>
+					<center><input onclick="submitForm();" type="submit" id = "Submit" value="Next" class="button"/>
+					</center>
+
+
+				<script type="text/javascript">
+					var butt = document.getElementById("Submit");
+					//butt.style.backgroundColor = "#6cc091";
+					//butt.disabled = true;
+
+
+
+					var aud_1 = document.getElementById("myAudio");
+					var aud_2 = document.getElementById("myAudio_1");
+					var aud_3 = document.getElementById("myAudio_2");
+					//butt.style.backgroundColor = "#6cc091";
+					//butt.disabled = true;
+
+
+					aud_1.addEventListener("play", played);
+					aud_2.addEventListener("play", played);
+					aud_3.addEventListener("play", played);
+					butt.disabled = true;
+
+					function submitForm(){
+						//move to next page
+						var url = 'test3_17.html';
+						window.location.href = url;
+					}
+
+					var ct = 0;
+					function played(){
+
+						ct = ct+1;
+						if(ct==1){
+							document.getElementById("Audio Elasped").innerHTML = 1;
+						}else if(ct === 2){
+
+							document.getElementById("Audio Elasped").innerHTML = 2;
+						}else if(ct === 3){
+							butt.disabled = false;
+							document.getElementById("Audio Elasped").innerHTML = 3;
+						}
+
+					}
+				</script>
+				<div class="box alt" style="padding-top:20px;">
+					<div class="row 100% uniform">
+						<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+						<div class="3u" ><span class="image fit"><img src="../images/ECE_Logo_3.png" alt="" /></span></div>
+						<div class="3u" ><span class="image fit"><img src="../images/c3sr.png" alt="" /></span></div>
+						<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+					</div>
+				</div>
+				</div>
+			</section>
+
+		<!-- Scripts -->
+
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

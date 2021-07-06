@@ -1,0 +1,197 @@
+<!DOCTYPE HTML>
+<!--
+	Projection by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+-->
+<html>
+	<head>
+		<title>LiveSensus | Survey</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.24.min.js"></script>
+		<link rel="apple-touch-icon" sizes="57x57" href="../assets/ico/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="../assets/ico/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="../assets/ico/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="../assets/ico/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="../assets/ico/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="../assets/ico/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="../assets/ico/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="../assets/ico/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="../assets/ico/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="../assets/ico/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="../assets/ico/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="../assets/ico/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="../assets/ico/favicon-16x16.png">
+		<link rel="manifest" href="../assets/ico/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="../assets/ico/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+	</head>
+	<body class="subpage">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a class="logo"><strong>LiveSensus</strong> Survey</a>
+				</div>
+			</header>
+
+		<!-- Three -->
+			<section id="three" class="wrapper">
+				<div class="inner">
+					<header class="align-center">
+						<h3>Before beginning, please provide some basic information</h3>
+
+						<form method="post" action="#">
+							<div class="row uniform">
+								<div class="6u 12u$(xsmall)">
+									<div class="select-wrapper">
+										<select name="age" id="age">
+											<option value="">- Age -</option>
+											<option value="under18">Under 18</option>
+											<option value="18">18</option>
+											<option value="19">19</option>
+											<option value="20">20</option>
+											<option value="21">21</option>
+											<option value="22">22</option>
+											<option value="23">23</option>
+											<option value="24">24</option>
+											<option value="25">25</option>
+											<option value="26">26</option>
+											<option value="27">27</option>
+											<option value="28">28</option>
+											<option value="29">29</option>
+											<option value="30">30</option>
+											<option value="31">31</option>
+											<option value="32">32</option>
+											<option value="33">33</option>
+											<option value="34">34</option>
+											<option value="35">35</option>
+											<option value="36">36</option>
+											<option value="37">37</option>
+											<option value="38">38</option>
+											<option value="39">39</option>
+											<option value="40">40</option>
+											<option value="41">41</option>
+											<option value="42">42</option>
+											<option value="43">43</option>
+											<option value="44">44</option>
+											<option value="45">45</option>
+											<option value="46">46</option>
+											<option value="47">47</option>
+											<option value="48">48</option>
+											<option value="49">49</option>
+											<option value="50">50</option>
+											<option value="51">51</option>
+											<option value="52">52</option>
+											<option value="53">53</option>
+											<option value="54">54</option>
+											<option value="55">55</option>
+											<option value="56">56</option>
+											<option value="57">57</option>
+											<option value="58">58</option>
+											<option value="59">59</option>
+											<option value="60">60</option>
+											<option value="61">61</option>
+											<option value="62">62</option>
+											<option value="63">63</option>
+											<option value="64">64</option>
+											<option value="65">65</option>
+											<option value="66">66</option>
+											<option value="67">67</option>
+											<option value="68">68</option>
+											<option value="69">69</option>
+
+											<option value="70+">70 +</option>
+										</select>
+									</div>
+								</div>
+								<div class="6u$ 12u$(xsmall)">
+									<div class="select-wrapper">
+										<select name="gender" id="gender">
+											<option value="">- Gender -</option>
+											<option value="male">Male</option>
+											<option value="female">Female</option>
+											<option value="other">Other</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="12u$" id="Output Audio Type">
+									<p><strong>Select Your listening device: </strong></p>
+									<input type="radio" id="Speaker" name="User Output" value="Speaker" >
+									<label for="Speaker">Speaker</label>
+									<input type="radio" id="Headphone/Earbuds" name="User Output" value="Headphone/Earbuds">
+									<label for="Headphone/Earbuds">Headphones/Earbuds</label>
+								</div>
+
+								<div class="12u$">
+									<p><strong>By checking this box, you agree to share your Age, Gender, and Device Type ("Desktop", "Tablet", or "Mobile").
+									We will not collect any personally identifying information, and your responses will remain confidential and secure.</strong></p>
+									<input type="checkbox" id="terms" name="terms" >
+									<label for="terms"><strong>I Agree</strong></label>
+
+
+
+								</div>
+
+								<!-- Break -->
+								<div class="12u$">
+									<ul class="actions">
+											<center><p>Page 1/18</p></center>
+										<li><button type="button" onClick="saveUserData(event)" class="button">Submit</button></li>
+									</ul>
+								</div>
+
+
+							</div>
+							<div class="box alt">
+								<div class="row 100% uniform">
+									<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+									<div class="3u" ><span class="image fit"><img src="../images/ECE_Logo_3.png" alt="" /></span></div>
+									<div class="3u" ><span class="image fit"><img src="../images/c3sr.png" alt="" /></span></div>
+									<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+								</div>
+							</div>
+
+						</form>
+
+					</header>
+					</center>
+
+					<script>
+					/* When the user clicks on the button,
+					toggle between hiding and showing the dropdown content */
+					function dropdownFunction() {
+					  document.getElementById("myDropdown").classList.toggle("show");
+					}
+
+					// Close the dropdown if the user clicks outside of it
+					window.onclick = function(event) {
+					  if (!event.target.matches('.dropbtn')) {
+					    var dropdowns = document.getElementsByClassName("dropdown-content");
+					    var i;
+					    for (i = 0; i < dropdowns.length; i++) {
+					      var openDropdown = dropdowns[i];
+					      if (openDropdown.classList.contains('show')) {
+					        openDropdown.classList.remove('show');
+					      }
+					    }
+					  }
+					}
+					</script>
+				</div>
+			</section>
+
+		<!-- Scripts -->
+			<script src="../assets/js/surveyData1.3.js"></script>
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

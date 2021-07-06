@@ -1,0 +1,222 @@
+<!DOCTYPE HTML>
+<!--
+	Projection by TEMPLATED
+	Instructions page for the survey
+-->
+<html>
+	<head>
+		<title>LiveSensus | Dashboard</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.24.min.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<link rel="apple-touch-icon" sizes="57x57" href="../assets/ico/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="../assets/ico/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="../assets/ico/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="../assets/ico/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="../assets/ico/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="../assets/ico/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="../assets/ico/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="../assets/ico/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="../assets/ico/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="../assets/ico/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="../assets/ico/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="../assets/ico/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="../assets/ico/favicon-16x16.png">
+		<link rel="manifest" href="../assets/ico/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="../assets/ico/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+	</head>
+	<body class="subpage">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="../index.html" class="logo"><strong>LiveSensus</strong></a>
+				</div>
+			</header>
+
+		<!-- Three -->
+			<section id="three" class="wrapper">
+				<div class="inner">
+					<header class="align-center">
+						<h2>Data Analytics Dashboard</h2>
+						<p>For More Analytics check out our <a href="blipDash.html">Blip Analytics Dashboard</a></p>
+						<ul class="alt">
+							<li><strong>Total Number of Survey Respondents</strong> <br>
+								<span class="icon fa-user fa-2x" style="color:#6cc091;" id="respondents"></span>
+								<center><div id="curve_chart" style="max-width: 25cm;"></div></center>
+							</li>
+
+							<li><strong>Total Number of Ratings</strong> <br>
+								<span class="icon fa-music fa-2x" style="color:#6cc091;" id="ratings"></span>
+							</li>
+
+							<li><strong>How People are Taking the Survey (Last 7 days)</strong> <br>
+								<span class="icon fa-tv fa-2x" style="color:#6cc091;" id="deskt"></span>
+								<span class="icon fa-mobile fa-2x" style="color:#6cc091;" id="mobi"></span>
+								<br />
+								<span class="icon fa-headphones fa-2x" style="color:#6cc091;" id="headphone"></span>
+								<span class="icon fa-volume-up fa-2x" style="color:#6cc091;" id="speaker"></span>
+							</li>
+
+							<li><strong>Score Distribution</strong> <br /> <br />
+								<center><div id="score_chart" style="max-width: 20cm;"></div></center> <br />
+								<center><div id="blip_chart" style="max-width: 20cm;"></div></center> <br />
+								<center><div id="background_chart" style="max-width: 20cm;"></div></center>
+							</li>
+
+					</header>
+
+			    <script type="text/javascript" >
+						var response;
+								var data = {
+									get: "True"
+								};
+								var xmlhttp = new XMLHttpRequest();
+								xmlhttp.open("GET", "https://6pm9e2md84.execute-api.us-east-1.amazonaws.com/Production/getresponses");
+								xmlhttp.setRequestHeader("Content-Type", "application/json");
+								xmlhttp.send(data);
+								xmlhttp.onreadystatechange = function() {
+									if (xmlhttp.readyState === 4) {
+										response = JSON.parse(xmlhttp.responseText);
+										if (xmlhttp.status === 200 ) {
+											console.log('successful');
+											console.log(response)
+
+											var respondents = response["message"][0];
+											document.getElementById("respondents").innerHTML = " " + respondents;
+
+											var rates = response["message"][1];
+											document.getElementById("ratings").innerHTML = " " + rates;
+
+											google.charts.load('current', {'packages':['corechart']});
+											google.charts.setOnLoadCallback(drawChart);
+											function drawChart(array) {
+												var data = google.visualization.arrayToDataTable(response["message"][2]);
+												var options = {
+													title: 'Respondents Over Last 7 Days',
+													legend: { position: 'bottom' }
+												};
+												var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+												chart.draw(data, options);
+											}
+
+
+
+											document.getElementById("mobi").innerHTML = " " + response["message"][3];
+											document.getElementById("deskt").innerHTML = " " + response["message"][4] + "  ";
+											document.getElementById("headphone").innerHTML = " " + response["message"][5];
+											document.getElementById("speaker").innerHTML = " " + response["message"][6] + "  ";
+
+
+											google.charts.load('current', {'packages':['bar']});
+											google.charts.setOnLoadCallback(drawChartS);
+											function drawChartS(array) {
+												var data = google.visualization.arrayToDataTable(response["message"][7]);
+												var options = {
+													title: 'Score Distribution of All Audio Samples',
+													legend: { position: 'bottom' },
+													colors: ['#6cc091']
+												};
+												var chart = new google.charts.Bar(document.getElementById('score_chart'));
+												chart.draw(data, google.charts.Bar.convertOptions(options));
+											}
+
+											google.charts.load('current', {'packages':['bar']});
+											google.charts.setOnLoadCallback(drawChart1);
+											function drawChart1(array) {
+												var data = google.visualization.arrayToDataTable(response["message"][8]);
+												var options = {
+													title: 'Score Distribution Across Issue Category',
+													chartArea: {
+											      left: 0,
+											      height: 250,
+											      width: 700
+											    },
+											    height: 300,
+											    width: 700,
+											    legend: {
+											      maxLines: 1,
+											      textStyle: {
+											        fontSize: 15
+											      }
+											    },
+													colors: ['#6CC091', '#C06C71', '#6C71C0', '#C06C9B', '#6CC0BB']
+												};
+												var chart = new google.charts.Bar(document.getElementById('blip_chart'));
+												chart.draw(data, google.charts.Bar.convertOptions(options));
+											}
+
+											google.charts.load('current', {'packages':['bar']});
+											google.charts.setOnLoadCallback(drawChart2);
+											function drawChart2(array) {
+												var data = google.visualization.arrayToDataTable(response["message"][9]);
+												var options = {
+													title: 'Score Distribution of Background Noises',
+													chartArea: {
+											      left: 0,
+											      height: 250,
+											      width: 700
+											    },
+											    height: 300,
+											    width: 700,
+											    legend: {
+											      maxLines: 1,
+											      textStyle: {
+											        fontSize: 15
+											      }
+											    },
+													colors: ['#6CC091', '#C0BB6C', '#6C71C0', '#C06C9B', '#9BC06C', '#C06C71', '#6CC0BB']
+												};
+												var chart = new google.charts.Bar(document.getElementById('background_chart'));
+												chart.draw(data, google.charts.Bar.convertOptions(options));
+											}
+
+										} else {
+												console.log('failed');
+										}
+									}
+								}
+
+			    </script>
+
+
+				</div>
+			</section>
+
+			<footer id="footer">
+				<div class="inner">
+					<div class="box alt">
+						<div class="row 100% uniform">
+							<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+							<div class="3u" ><span class="image fit"><a href="https://ece.illinois.edu/"><img src="../images/ECE_Logo_3.png" alt="" /></a></span></div>
+							<div class="3u" ><span class="image fit"><a href="https://www.c3sr.com/"><img src="../images/c3sr.png" alt="" /></a></span></div>
+							<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+						</div>
+					</div>
+
+					<div class="copyright">
+						<center><ul><br/><h3>For more news, analysis, and insights, follow us on: </h3>
+
+								<a href="https://www.linkedin.com/company/livesensus" class="icon fa-linkedin fa-2x"><span class="label">LinkedIn</span></a>
+								<span>&nbsp;</span>
+								<a href="https://www.facebook.com/LiveSensusSoftware/" class="icon fa-facebook fa-2x"><span class="label">Facebook</span></a>
+
+						</ul></center>
+						&copy; LiveSensus. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Unsplash</a>.
+					</div>
+
+				</div>
+			</footer>
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

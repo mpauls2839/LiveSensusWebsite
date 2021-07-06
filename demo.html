@@ -1,0 +1,747 @@
+<!DOCTYPE HTML>
+<!--
+	Projection by TEMPLATED
+	test audio #1 page for the survey
+-->
+<html>
+	<head>
+		<title>LiveSensus | Demo</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="assets/css/main.css" />
+		<link rel="apple-touch-icon" sizes="57x57" href="assets/ico/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="assets/ico/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="assets/ico/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="assets/ico/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="assets/ico/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="assets/ico/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="assets/ico/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="assets/ico/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="assets/ico/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="assets/ico/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="assets/ico/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="assets/ico/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="assets/ico/favicon-16x16.png">
+		<link rel="manifest" href="assets/ico/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="assets/ico/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+		<script src="https://www.google.com/recaptcha/api.js" async defer></script>
+		<link rel="stylesheet" href="assets/css/audio.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.24.min.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+
+	</head>
+	<body class="subpage">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a class="logo"><strong>LiveSensus</strong> Demo</a>
+				</div>
+			</header>
+
+		<!-- Three -->
+			<section id="three" class="wrapper">
+				<div class="inner">
+					<header class="align-center">
+						<h2>Test Audio</h2>
+
+						  <button id="original_butt" onclick="choose_original()">Original Audio</button>
+						  <button id="echo_butt" onclick="choose_echo()">Echo</button>
+						  <button id="packetloss_butt" onclick="choose_packetLoss()">Packet Loss</button>
+						  <button id="latency_butt" onclick="choose_latency()">Vocal Interruption</button>
+						  <button id="dynamic_range_butt" onclick="choose_dynamic_range()">Dynamic Range Compression</button>
+
+
+						<p><strong>Click one of the buttons to hear a "blipped" audio
+						</strong></p>
+
+						<audio id="myAudio" class="align-center" preload="auto" >
+						  <source id="asrc" src=""> </source>
+						Your browser does not support the audio element.
+						</audio>
+
+
+
+						<ul class="audio">
+							<li><div id="audioplayer">
+								<button id="pButton" class="play"></button>
+								<span id="Play ready">Loading ...</span>
+							</div></li>
+							<li><div id="timeline" >
+								<div id="playhead"></div>
+							</div></li>
+						</ul>
+
+						<p><strong> <span id="Time Elasped">0</span>  <span >/</span> <span id="Audio Duration">0</span><span > s</span></strong></p>
+
+							<br>
+						<p><strong> Instantaneous Model Score: <span id="cur_MOS"> </span><p>
+
+
+
+						<center><div id="mos_chart" style="max-width: 25cm;"></div></center>
+						<script>
+							var audio_selector = -1;
+							const ORIGINAL = 0;
+							const ECHO = 1;
+							const PACKETLOSS = 2;
+							const LATENCY = 3;
+							const DYNAMIC_RANGE = 4;
+							var audio_source = ["audio/raw1.2/VCC_1_1.2.wav", "audio/v1_2/ECHO_3.wav", "audio/v1_2/PACKETLOSS_1.wav", "audio/test73.wav", "audio/v1_2/BANDWIDTH_94.wav"];
+							// var audio_source = ["VCC_1_1.2.wav", "ECHO_3.wav", "PACKETLOSS_1.wav", "test73.wav", "BANDWIDTH_94.wav"];
+
+							const SEG_SIZE = 1;
+							var score_array1 = [2.6610187072786986, 2.802403442053851, 2.3840388633690366, 3.496671264082093, 3.6150720793970192, 3.3619809451460894, 3.458693536586671, 2.6563344578055488, 3.25204470388064, 3.201689132708508, 2.9104500791478927];
+							var live_mos1 = [2.6610187072786986, 2.7175726011887593, 2.567192937887852, 2.987825354903899, 3.086070271947689, 3.0271539628432635, 3.109775230087244, 2.835895914042613, 3.1064243696112213, 3.100514022907247, 2.9857516515981475];
+							// var survey_mos1 = [1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1];
+
+							var score_array2 = [2.5720782194923317, 2.739804402753422, 1.8869895610980874, 3.4713089754527076, 2.329055472211703, 2.608151770657063, 2.4273534914663433, 2.3941430135825703, 2.4242954093551945, 3.1158224645979513, 2.3654156219201243];
+							var live_mos2 = [2.5720782194923317, 2.639168692796768, 2.318169898125965, 2.894406952264096, 2.4951957532865556, 2.5935430501787113, 2.5237995181847888, 2.496671026077842, 2.530152119741117, 2.763052361935462, 2.4950324179022];
+							// var survey_mos2 = [2,2,2,2,2,2,2,2,2,2,2,2,2,2,2];
+
+							var score_array3 = [2.4687496168059995, 2.467906869081366, 2.4067844097472166, 2.482620571286179, 2.4676387707949954, 2.3026748486983233, 2.4631349505852116, 2.3054549435720526, 2.510976702304237, 2.5074577079455764, 2.594977119861076];
+							var live_mos3 = [2.4687496168059995, 2.4684125177161462, 2.4438624042555306, 2.469253136270007, 2.4645971595751504, 2.3988549196340694, 2.454651596728193, 2.389928283404375, 2.46566489239511, 2.4638267053866585, 2.498742015650239];
+							// var survey_mos3 = [3,3,3,3,3,3,3,3,3,3,3,3,3,3,3,3];
+
+							var score_array4 = [3.2103894659118977, 2.947112890546065, 3.296428835677874, 2.6432558237666655, 2.4446187172675815, 1.9517646345222386, 3.3637461817461536, 3.339396866108596, 2.422629575586868, 2.5986153349817966, 3.64695999465428];
+							var live_mos4 = [3.2103894659118977, 3.1050788357655645, 3.2132120247743883, 2.9630383947970365, 2.851605295094366, 2.621904735770086, 3.1160791870426348, 3.1076595029408596, 2.728286284112145, 2.7705103345879296, 3.1801168031961504];
+							// var survey_mos4 = [4,4,4,4,4,4,4,4,4,4,4,4,4,4];
+
+							var score_array5 = [2.2341929358849604, 2.840922452547417, 2.866923420646985, 2.444855724638835, 3.475895766963165, 3.0755459787072024, 3.571147627942862, 3.209978598798544, 2.598927511638075];
+							var live_mos5 = [2.2341929358849604, 2.476884742549943, 2.560092671789265, 2.4321763599003674, 2.8458603133039464, 2.7361232342942987, 2.9945955297976834, 2.912253212609685, 2.7100920426439474];
+							// var survey_mos5 = [5,5,5,5,5,5,5,5,5,5,5,5,5,5];
+
+							var MOS_table = [
+								['Time (s)', 'Model Outputs'],
+								['0', 3,3]
+							];
+
+							/*Buttons*/
+							var original_button = document.getElementById('original_butt');
+							var echo_button = document.getElementById('echo_butt');
+							var packetloss_button = document.getElementById('packetloss_butt');
+							var latency_button = document.getElementById('latency_butt');
+							var drange_button = document.getElementById('dynamic_range_butt');
+
+
+							// store current time
+							var curr_time = 0;
+
+							function isPlaying(audio) { return !audio.paused; }
+
+
+							// function to change colour
+							function change_button_color(){
+								if(audio_selector == ORIGINAL){
+									original_button.style.backgroundColor = "#d3d3d3";
+									echo_button.style.backgroundColor = "";
+									packetloss_button.style.backgroundColor = "";
+									latency_button.style.backgroundColor = "";
+									drange_button.style.backgroundColor = "";
+								}else if (audio_selector == ECHO){
+									original_button.style.backgroundColor = "";
+									echo_button.style.backgroundColor = "#d3d3d3";
+									packetloss_button.style.backgroundColor = "";
+									latency_button.style.backgroundColor = "";
+									drange_button.style.backgroundColor = "";
+								}else if (audio_selector == PACKETLOSS){
+									original_button.style.backgroundColor = "";
+									echo_button.style.backgroundColor = "";
+									packetloss_button.style.backgroundColor = "#d3d3d3";
+									latency_button.style.backgroundColor = "";
+									drange_button.style.backgroundColor = "";
+								}
+								else if (audio_selector == LATENCY){
+									original_button.style.backgroundColor = "";
+									echo_button.style.backgroundColor = "";
+									packetloss_button.style.backgroundColor = "";
+									latency_button.style.backgroundColor = "#d3d3d3";
+									drange_button.style.backgroundColor = "";
+								}
+								else if (audio_selector == DYNAMIC_RANGE){
+									original_button.style.backgroundColor = "";
+									echo_button.style.backgroundColor = "";
+									packetloss_button.style.backgroundColor = "";
+									latency_button.style.backgroundColor = "";
+									drange_button.style.backgroundColor = "#d3d3d3";
+								}
+
+							}
+
+							function clear_chart(){
+								MOS_table = [
+									['Time (s)', 'Instantaneous Model Score', 'Livesensus Score'],
+									['0', 3,3]
+								];
+							}
+
+							function blip(target_list, live_mos){
+
+								var cur_time = Math.floor((Math.floor(music.currentTime)));
+								for (var i=cur_time; i<(target_list.length*SEG_SIZE); i++){
+									var index = Math.floor(i/SEG_SIZE);
+									if (i == 0){
+										continue;
+									}
+									MOS_table[i+1] = [(i+1).toString(), target_list[index], live_mos[index]];
+								}
+							}
+
+							function choose_original(){
+
+								if(audio_selector == -1){
+									audio_selector = ORIGINAL;
+									clear_chart();
+									for (var i=0; i<(score_array1.length*SEG_SIZE); i++){
+										var index = Math.floor(i/SEG_SIZE);
+										MOS_table.push([(i+1).toString(), score_array1[index], live_mos1[index]]);
+									}
+
+									theDOMHasLoaded();
+
+								}
+								else{
+									blip(score_array1, live_mos1);
+									audio_selector = 0;
+									theDOMHasLoaded();
+								}
+								change_button_color();
+								// console.log(MOS_table);
+								update_graph();
+
+							}
+
+							function choose_echo(){
+
+
+								if(audio_selector == -1){
+									audio_selector = ECHO;
+									clear_chart();
+									for (var i=0; i<(score_array2.length*SEG_SIZE); i++){
+										var index = Math.floor(i/SEG_SIZE);
+										MOS_table.push([(i+1).toString(), score_array2[index], live_mos2[index]]);
+
+									}
+									theDOMHasLoaded();
+								}
+								else{
+									blip(score_array2, live_mos2);
+									audio_selector = 1;
+									theDOMHasLoaded();
+								}
+								change_button_color();
+								// console.log(MOS_table);
+								update_graph();
+
+							}
+
+
+							function choose_packetLoss(){
+
+								if(audio_selector == -1){
+									audio_selector = PACKETLOSS;
+									clear_chart();
+									for (var i=0; i<(score_array3.length*SEG_SIZE); i++){
+										var index = Math.floor(i/SEG_SIZE);
+										MOS_table.push([(i+1).toString(), score_array3[index], live_mos3[index]]);
+
+									}
+
+									theDOMHasLoaded();
+								}
+								else{
+									blip(score_array3, live_mos3);
+									audio_selector = 2;
+									theDOMHasLoaded();
+								}
+								change_button_color();
+								// console.log(MOS_table);
+								update_graph();
+							}
+
+							function choose_latency(){
+
+								if(audio_selector == -1){
+									audio_selector = LATENCY;
+									clear_chart();
+									for (var i=0; i<(score_array4.length*SEG_SIZE); i++){
+										var index = Math.floor(i/SEG_SIZE);
+										MOS_table.push([(i+1).toString(), score_array4[index], live_mos4[index]]);
+
+									}
+
+									theDOMHasLoaded();
+								}
+								else{
+									blip(score_array4, live_mos4);
+									audio_selector = LATENCY;
+									theDOMHasLoaded();
+								}
+								change_button_color();
+								// console.log(MOS_table);
+								update_graph();
+							}
+
+							function choose_dynamic_range(){
+
+								if(audio_selector == -1){
+									audio_selector = DYNAMIC_RANGE;
+									clear_chart();
+									for (var i=0; i<(score_array5.length*SEG_SIZE); i++){
+										var index = Math.floor(i/SEG_SIZE);
+										MOS_table.push([(i+1).toString(), score_array5[index], live_mos5[index]]);
+
+									}
+
+									theDOMHasLoaded();
+								}
+								else{
+									blip(score_array5, live_mos5);
+									audio_selector = DYNAMIC_RANGE;
+									theDOMHasLoaded();
+								}
+								change_button_color();
+								// console.log(MOS_table);
+								update_graph();
+							}
+
+							var music = document.getElementById('myAudio'); // id for audio element
+							var duration = music.duration; // Duration of audio clip, calculated here for embedding purposes
+							var pButton = document.getElementById('pButton'); // play button
+							var playhead = document.getElementById('playhead'); // playhead
+							var timeline = document.getElementById('timeline'); // timeline
+							var isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+							var isChrome = !!window.chrome && (!!window.chrome.webstore || !!window.chrome.runtime);
+
+
+
+
+							document.addEventListener("DOMContentLoaded", theDOMHasLoaded, false);
+							// this script has to be in headers with audio to work
+							//get blip type
+							async function theDOMHasLoaded(e){
+
+
+								var source = document.getElementById('asrc');
+								var strID;
+								var playSource = Math.floor((Math.random()*50)+1);
+
+
+
+
+								if (audio_selector != -1){
+									if (audio_selector == ORIGINAL){
+										source.src = audio_source[ORIGINAL];
+										music.currentTime = 0;
+
+										// saving current audio info
+										var playing_hard = isPlaying(music);
+
+										var current_timestamp = music.currentTime;
+										if (current_timestamp <=0){
+											current_timestamp = current_timestamp * -1;
+										}
+
+										// reload
+										music.load();
+										// if there is a current audio playing, starting playing continously
+										if (isSafari){
+											console.log("hello, safari");
+											music.oncanplay =  function() {
+												if (playing_hard){
+													music.currentTime = current_timestamp;
+													music.play();
+												}else{
+													music.currentTime = current_timestamp;
+												}
+											};
+										}
+										else{
+											if (playing_hard){
+												music.currentTime = current_timestamp;
+												music.play();
+											}else {
+												music.currentTime = current_timestamp;
+											}
+										}
+
+
+									}
+									else if (audio_selector == ECHO){
+										source.src = audio_source[ECHO];
+										music.currentTime = 0;
+
+										// saving current audio info
+										var playing_hard = isPlaying(music);
+
+										var current_timestamp = music.currentTime;
+										if (current_timestamp <=0){
+											current_timestamp = current_timestamp * -1;
+										}
+
+										// reload
+										music.load();
+
+										// if there is a current audio playing, starting playing continously
+
+										if (isSafari){
+											music.oncanplay =  function() {
+												if (playing_hard){
+													music.currentTime = current_timestamp;
+													music.play();
+												}else{
+													music.currentTime = current_timestamp;
+												}
+											};
+										}
+										else{
+											if (playing_hard){
+												music.currentTime = current_timestamp;
+												music.play();
+											}else{
+												music.currentTime = current_timestamp;
+											}
+										}
+
+
+									}
+									else if (audio_selector == PACKETLOSS){
+										source.src = audio_source[PACKETLOSS];
+										music.currentTime = 0;
+
+										// saving current audio info
+										var playing_hard = isPlaying(music);
+										var current_timestamp = music.currentTime;
+										if (current_timestamp <=0){
+											current_timestamp = current_timestamp * -1;
+										}
+										// reload
+										music.load();
+
+										// if there is a current audio playing, starting playing continously
+										if (isSafari){
+											music.oncanplay =  function() {
+												if (playing_hard){
+													music.currentTime = current_timestamp;
+													music.play();
+												}
+											};
+										}
+										else{
+											if (playing_hard){
+												music.currentTime = current_timestamp;
+												music.play();
+											}
+										}
+									}
+									else if (audio_selector == LATENCY){
+										source.src = audio_source[LATENCY];
+										music.currentTime = 0;
+
+										// saving current audio info
+										var playing_hard = isPlaying(music);
+										var current_timestamp = music.currentTime;
+										if (current_timestamp <=0){
+											current_timestamp = current_timestamp * -1;
+										}
+										// reload
+										music.load();
+
+										// if there is a current audio playing, starting playing continously
+										if (isSafari){
+											music.oncanplay =  function() {
+												if (playing_hard){
+													music.currentTime = current_timestamp;
+													music.play();
+												}
+											};
+										}
+										else{
+											if (playing_hard){
+												music.currentTime = current_timestamp;
+												music.play();
+											}
+										}
+									}
+									else if (audio_selector == DYNAMIC_RANGE){
+										source.src = audio_source[DYNAMIC_RANGE];
+										music.currentTime = 0;
+
+										// saving current audio info
+										var playing_hard = isPlaying(music);
+										var current_timestamp = music.currentTime;
+										if (current_timestamp <=0){
+											current_timestamp = current_timestamp * -1;
+										}
+										// reload
+										music.load();
+
+										// if there is a current audio playing, starting playing continously
+										if (isSafari){
+											music.oncanplay =  function() {
+												if (playing_hard){
+													music.currentTime = current_timestamp;
+													music.play();
+												}
+											};
+										}
+										else{
+											if (playing_hard){
+												music.currentTime = current_timestamp;
+												music.play();
+											}
+										}
+									}
+
+								}
+								else{
+									//audio_selector  = 0;
+									//music.load();
+									choose_original();
+								}
+
+
+
+							}
+
+
+
+							// once the audio is loaded
+							music.onloadedmetadata = function() {
+								// note that we need to use music.duration here since duration as of now is NaN, thats a value taken before the audio is loaded
+								document.getElementById("Audio Duration").innerHTML = Math.floor(music.duration);
+
+								document.getElementById("Play ready").innerHTML = "Ready!";
+							}
+
+							// timeline width adjusted for playhead
+							var timelineWidth = timeline.offsetWidth - playhead.offsetWidth;
+
+							// play button event listenter
+							pButton.addEventListener("click", play);
+
+							// timeupdate event listener
+							music.addEventListener("timeupdate", timeUpdate, false);
+
+							// makes timeline clickable
+							timeline.addEventListener("click", function(event) {
+								moveplayhead(event);
+								music.currentTime = duration * clickPercent(event);
+							}, false);
+
+							// returns click as decimal (.77) of the total timelineWidth
+							function clickPercent(event) {
+								return (event.clientX - getPosition(timeline)) / timelineWidth;
+							}
+
+							// makes playhead draggable
+							playhead.addEventListener('mousedown', mouseDown, false);
+							window.addEventListener('mouseup', mouseUp, false);
+
+							// Boolean value so that audio position is updated only when the playhead is released
+							var onplayhead = false;
+
+							// mouseDown EventListener
+							function mouseDown() {
+								onplayhead = true;
+								window.addEventListener('mousemove', moveplayhead, true);
+								music.removeEventListener('timeupdate', timeUpdate, false);
+							}
+
+							// mouseUp EventListener
+							// getting input from all mouse clicks
+							function mouseUp(event) {
+								if (onplayhead == true) {
+									moveplayhead(event);
+									window.removeEventListener('mousemove', moveplayhead, true);
+									// change current time
+									music.currentTime = duration * clickPercent(event);
+									music.addEventListener('timeupdate', timeUpdate, false);
+								}
+								onplayhead = false;
+							}
+							// mousemove EventListener
+							// Moves playhead as user drags
+							function moveplayhead(event) {
+								var newMargLeft = event.clientX - getPosition(timeline);
+
+								if (newMargLeft >= 0 && newMargLeft <= timelineWidth) {
+									playhead.style.marginLeft = newMargLeft + "px";
+								}
+								if (newMargLeft < 0) {
+									playhead.style.marginLeft = "0px";
+								}
+								if (newMargLeft > timelineWidth) {
+									playhead.style.marginLeft = timelineWidth + "px";
+								}
+							}
+
+							// timeUpdate
+							// Synchronizes playhead position with current point in audio
+							function timeUpdate() {
+								var playPercent = timelineWidth * (music.currentTime / duration);
+
+								playhead.style.marginLeft = playPercent + "px";
+								// audio duration
+								document.getElementById("Time Elasped").innerHTML = Math.floor(music.currentTime);
+
+
+								if (music.currentTime == duration) {
+									pButton.className = "";
+									pButton.className = "play";
+
+									audio_selector = -1;
+									// document.getElementById('asrc') = audio_source[ORIGINAL];
+									// choose_original();
+									// console.log("done");
+									// music.load();
+
+								}
+							}
+							var played = 0;
+
+							//Play and Pause
+							function play() {
+
+								// start music
+								if (music.paused ) { //&& played == 0) {
+
+									music.play();
+
+									// remove play, add pause
+									pButton.className = "";
+									pButton.className = "pause";
+
+									var duration = music.duration * 1000;
+								}
+								else {
+
+
+									var playpromise = music.play();
+									if(playpromise !== undefined){
+										music.pause();
+									}
+
+
+									pButton.className = "play";
+
+								}
+
+
+							}
+
+
+							// Gets audio file duration
+							music.addEventListener("canplaythrough", function() {
+								duration = music.duration;
+							}, false);
+
+							// getPosition
+							// Returns elements left position relative to top-left of viewport
+							function getPosition(el) {
+								return el.getBoundingClientRect().left;
+							}
+
+
+					</script>
+
+					</header>
+
+
+					<script type="text/javascript">
+						google.charts.load('current', {'packages':['corechart']});
+						google.charts.setOnLoadCallback(update_graph);
+
+						// draw mos graph
+						function drawChart(live_table) {
+							var data = google.visualization.arrayToDataTable(live_table);
+
+							var options_mos = {
+								title: 'Model Outputs',
+								curveType: 'none',
+								legend: { position: 'right' },
+								chartArea: {  width: "65%", height: "70%" }
+							};
+
+							var chart = new google.visualization.LineChart(document.getElementById('mos_chart'));
+
+							chart.draw(data, options_mos);
+						}
+
+						// update the graph for every time_unit seconds
+						function update_graph(){
+							var time_unit = 1000 * 0.5;
+								setInterval(function(){
+									var time = Math.floor((Math.floor(music.currentTime)));
+									time = time + 2;
+									drawChart(MOS_table.slice(0, time));
+									document.getElementById("cur_MOS").innerHTML = Math.floor(MOS_table[time-1][1]*100)/100;
+								}, time_unit);
+						}
+
+					</script>
+
+					<div class="table-wrapper">
+						<table class="align-center">
+
+							<tbody>
+								<tr>
+									<td></td>
+									<td><strong>Average Instantaneous Model Score</strong></td>
+									<td><strong>Average Livesensus Score</strong></td>
+								</tr>
+								<tr>
+									<td><strong>Original</strong></td>
+									<td>3.07</td>
+									<td>2.93</td>
+								</tr>
+								<tr>
+									<td><strong>Echo</strong></td>
+									<td>2.58</td>
+									<td>2.57</td>
+								</tr>
+								<tr>
+									<td><strong>Packet Loss</strong></td>
+									<td>2.45</td>
+									<td>2.45</td>
+								</tr>
+								<tr>
+									<td><strong>Vocal Interruption</strong></td>
+									<td>2.90</td>
+									<td>2.99</td>
+								</tr>
+								<tr>
+									<td><strong>Dynamic Range Compression</strong></td>
+									<td>2.92</td>
+									<td>2.64</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+
+
+					<div class="box alt" style="padding-top:20px;">
+						<div class="row 100% uniform">
+							<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+							<div class="3u" ><span class="image fit"><img src="images/ECE_Logo_3.png" alt="" /></span></div>
+							<div class="3u" ><span class="image fit"><img src="images/c3sr.png" alt="" /></span></div>
+							<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+						</div>
+					</div>
+				</div>
+
+
+
+			</section>
+
+		<!-- Scripts -->
+			<script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/skel.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+
+	</body>
+</html>

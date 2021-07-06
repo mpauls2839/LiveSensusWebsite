@@ -1,0 +1,136 @@
+<!DOCTYPE HTML>
+<!--
+	Projection by TEMPLATED
+	templated.co @templatedco
+	Released for free under the Creative Commons Attribution 3.0 license (templated.co/license)
+    Used for the LiveSensus landing Page
+-->
+<html>
+	<head>
+		<title>LiveSensus | Audio Dataset</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<link rel="apple-touch-icon" sizes="57x57" href="../assets/ico/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="../assets/ico/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="../assets/ico/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="../assets/ico/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="../assets/ico/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="../assets/ico/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="../assets/ico/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="../assets/ico/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="../assets/ico/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="../assets/ico/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="../assets/ico/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="../assets/ico/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="../assets/ico/favicon-16x16.png">
+		<link rel="manifest" href="../assets/ico/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="../assets/ico/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+	</head>
+	<body class="subpage">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="../index.html" class="logo"><strong>LiveSensus</strong></a>
+					<nav id="nav">
+						<a href="../index.html">Home</a>
+						<a href="../demo.html">Demo</a>
+            <a href="../works.html">How It Works</a>
+            <a href="../survey.html">Survey</a>
+						<a href="../about.html">About Us</a>
+					</nav>
+					<a href="#navPanel" class="navPanelToggle"><span class="fa fa-bars"></span></a>
+				</div>
+			</header>
+
+
+		<!-- Three -->
+			<section id="three" class="wrapper">
+				<div class="inner">
+					<header class="align-center">
+						<h2>Crowdsourcing a Subjective Audio Dataset</h2>
+					</header>
+					<div class="image right">
+
+					</div>
+					<p align="justify">Ever increasing end-user bandwidths have helped establish video as the dominant traffic over the Internet and have made applications in the live streaming and video conferencing space feasible. Aided by the covid-19 pandemic, live video streaming for both the broadcast and interactive use cases is one of the largest growing segments within video at this time as is evidenced by the large adoption of applications including Zoom, AWS Chime, Twitch and Facebook Live. To measure both return on investment and to make sound investment decisions, it is paramount that we are able to measure the media quality offered by these systems.</p>
+
+
+					<p align="justify">Audio quality degradations occur frequently in live streaming and video conferencing applications, and it can be the dominant influence on the viewer’s Quality of Experience (QoE) for many use cases. At LiveSensus, Our goal is to accurately measure live audio quality. This includes capturing and labeling audio quality degradations and other audio features, as well as providing a meaningful quality score that is in line with how people perceive quality. To that end, we created a novel audio dataset that features conversational audio with various quality issues that are common in a live streaming video.</p>
+
+
+					<p align="justify">The main focus of the dataset is to capture perception-based quality scores for some of the most common and annoying audio issues in a live Voice-over-IP (VoIP) setting. To do this, we created an online survey (<a href="../survey.html">livesensus.com/Survey</a>) that recorded users’ reactions to various audio clips with quality issues. This had the bonus effect of letting users use the same listening equipment that they would normally use when viewing or engaging in live streams. It also forced us to focus on the most annoying and distracting audio issues, since these would be detectable across many different types of speakers and headphones. To gauge the listener’s perception of quality, we relied on the Mean Opinion Score (MOS).</p>
+
+					<p align="justify">The quality issues we focused on include echo, network interruptions like packet loss, vocal interruptions due to latency, background noise, and dynamic range compression. In each of these categories, we took source clips from (link VCC), and applied each quality issue at various degrees of intensity. We interpreted intensity by manually listening to several audio files. </p>
+
+					<p align="justify">The survey worked as follows. Users entered some non-identifying information about their audio setup and were given some instructions about how to complete the survey. As users went through the survey, they were provided with practice audio samples to understand the various quality issues being presented. Embedded throughout the survey were various hidden assessments that tested users’ understanding of the English language, their listening setup, and their levels of attention. </p>
+
+					<p align="justify">To obtain the number of ratings we needed, our team tried two approaches. First, we pushed the survey organically in the hopes of reaching a diverse audience in various online communities. We did this by posting our survey on Reddit, LinkedIn, and other social platforms. We managed to obtain over 500 unique responses, and this trial also served to validate our survey as we incorporated feedback in aspects of the survey design and technical functionality. While crowdsourcing had many benefits from an iterative design standpoint, we knew it wouldn’t get us the entire dataset which we needed. For that, we published the survey on Amazon Mechanical Turk. We ran two main batches, one that required users to be from predominantly English-speaking countries and be master workers as well as one that was more general in scope. With these batches of labeled data, we were able to cross-validate and ensure that the results coming from our general batch were indeed of high quality and accuracy. </p>
+
+					<p align="justify"><strong>Results </strong>After obtaining over 6400 unique responses and 166,000 individual audio ratings, we identified several trends in the data. Many of these were expected like the mean opinion score decreasing as quality issue intensity increased and dynamic range compression scoring higher on average than network interruptions. What is interesting about the data is users’ intolerance or low opinion of several issue types. Issues like echo seem as unfavorable as issues like background noise and network interruptions seem as annoying as vocal interruptions maybe because both can render a conversation incomprehensible. With background noise, non-stationary noises like a dog barking or siren had noticeably lower scores than ambient noises. Overall, it seems that any of these issues, at certain thresholds, can make users incredibly annoyed with an audio service or experience. We think our dataset provides a good range above, below, and at such thresholds.</p>
+
+					<center><p>More analytics on our dataset can be found here</p>
+					<a href="../Survey/blipDash.html" class="button">Data Analytics</a></center>
+
+					<br />
+
+						<center><footer>
+							<h3>Download Dataset</h3>
+							<p align="justify"><i>
+								This dataset contains audio issues that can make a voice call or live stream incomprehensible. Issues can be caused by the network, codec, recording environment, and software concealment techniques. This dataset contains speech recordings with a range of degradations applied at various intensities, each with an associative set of roughly 20 subjective opinion scores.
+							</i></p>
+							<a href="../assets/LSDataset.zip" download class="button">Download .zip</a></center>
+
+
+							<!--<div class="inner">
+								<form id="contact-form" method="post">
+
+									<div class="field half first">
+										<label for="name">Name</label>
+										<input name="name" id="name-input" type="text" placeholder="Name (First & Last)" class="form-control">
+									</div>
+									<div class="field half">
+										<label for="email">Email</label>
+										<input name="email" id="email-input" type="email" placeholder="Email" class="form-control">
+									</div>
+									<ul class="actions">
+										<li><button type="button" onClick="submitToAPI(event)" class="button alt">Send Message</button></li>
+									</ul>
+								</form>
+							</div> -->
+				    </footer></center>
+
+				</div>
+			</section>
+		<!-- Footer -->
+			<footer id="footer">
+				<div class="inner">
+
+					<div class="copyright">
+						<a href="https://ece.illinois.edu/">
+							<img src="../images/ECE_Logo_3.png" width="323" height="101" >
+						</a>
+						<a href="https://www.c3sr.com/">
+							<img src="../images/c3sr.png" width="272" height="101" style="margin-left: auto;margin-right: auto;display:block;">
+						</a>
+						<center><ul><br/><h3>For more news, analysis, and insights, follow us on: </h3>
+								<a href="https://www.linkedin.com/company/livesensus" class="icon fa-linkedin fa-2x"><span class="label">LinkedIn</span></a>
+								<span>&nbsp;</span>
+								<a href="https://www.facebook.com/LiveSensusSoftware/" class="icon fa-facebook fa-2x"><span class="label">Facebook</span></a>
+						</ul></center>
+						&copy; LiveSensus. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Unsplash</a>.
+					</div>
+				</div>
+			</footer>
+
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>

@@ -1,0 +1,331 @@
+<!DOCTYPE HTML>
+<!--
+	Projection by TEMPLATED
+	Instructions page for the survey
+-->
+<html>
+	<head>
+		<title>LiveSensus | Dashboard</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<link rel="stylesheet" href="../assets/css/main.css" />
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+		<script src="https://sdk.amazonaws.com/js/aws-sdk-2.1.24.min.js"></script>
+		<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+		<link rel="apple-touch-icon" sizes="57x57" href="../assets/ico/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="../assets/ico/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="../assets/ico/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="../assets/ico/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="../assets/ico/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="../assets/ico/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="../assets/ico/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="../assets/ico/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="../assets/ico/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="../assets/ico/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="../assets/ico/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="../assets/ico/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="../assets/ico/favicon-16x16.png">
+		<link rel="manifest" href="../assets/ico/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="../assets/ico/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+	</head>
+	<body class="subpage">
+
+		<!-- Header -->
+			<header id="header">
+				<div class="inner">
+					<a href="../index.html" class="logo"><strong>LiveSensus</strong></a>
+				</div>
+			</header>
+
+		<!-- Three -->
+			<section id="main" class="wrapper">
+				<div class="inner">
+					<header class="align-center">
+						<h2>Blip Intensity Dashboard</h2>
+						<p>The X-Axis represents degradation "intensity". The 0th intensity is the source clip without any degradation.</p>
+						<ul class="alt">
+							<strong>Distribution of scores by blip category</strong>
+					</header>
+
+
+					<div class="row">
+						<section class="6u 12u$(medium)">
+								<div id="pd_chart" style="max-width: 15cm;"></div>
+						</section>
+						<section class="6u 12u$(medium)">
+								<div id="pl_chart" style="max-width: 15cm;">
+						</section>
+					</div>
+
+					<div class="row">
+						<section class="6u 12u$(medium)">
+								<div id="lag_chart" style="max-width: 15cm;"></div>
+						</section>
+						<section class="6u 12u$(medium)">
+								<div id="echo_chart" style="max-width: 15cm;">
+						</section>
+					</div>
+
+					<div class="row">
+						<section class="6u 12u$(medium)">
+								<div id="wind_chart" style="max-width: 15cm;"></div>
+						</section>
+						<section class="6u 12u$(medium)">
+								<div id="ac_chart" style="max-width: 15cm;">
+						</section>
+					</div>
+
+					<div class="row">
+						<section class="6u 12u$(medium)">
+								<div id="babble_chart" style="max-width: 15cm;"></div>
+						</section>
+						<section class="6u 12u$(medium)">
+								<div id="bark_chart" style="max-width: 15cm;">
+						</section>
+					</div>
+
+					<div class="row">
+						<section class="6u 12u$(medium)">
+								<div id="car_chart" style="max-width: 15cm;"></div>
+						</section>
+						<section class="6u 12u$(medium)">
+								<div id="siren_chart" style="max-width: 15cm;">
+						</section>
+					</div>
+
+					<center><div id="drill_chart" style="max-width: 15cm;"></div></center> <br />
+
+					<center><div id="band_chart" style="max-width: 15cm;"></div></center> <br />
+
+			    <script type="text/javascript" >
+					var response;
+					//response["message"][2]
+							var data = {
+								get: "True"
+							};
+							var xmlhttp = new XMLHttpRequest();
+							xmlhttp.open("GET", "https://6pm9e2md84.execute-api.us-east-1.amazonaws.com/Production/getresponses");
+							xmlhttp.setRequestHeader("Content-Type", "application/json");
+							xmlhttp.send(data);
+							xmlhttp.onreadystatechange = function() {
+								if (xmlhttp.readyState === 4) {
+									response = JSON.parse(xmlhttp.responseText);
+									if (xmlhttp.status === 200 ) {
+										console.log('successful');
+										console.log(response)
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChart0);
+
+										function drawChart0() {
+											var data = google.visualization.arrayToDataTable(response["message"][10]);
+
+											var options = {
+												title: 'Lagging Intensity',
+												legend: { position: 'bottom' }
+											};
+
+											var chart0 = new google.visualization.LineChart(document.getElementById('lag_chart'));
+
+											chart0.draw(data, options);
+										}
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChart1);
+
+										function drawChart1() {
+											var data = google.visualization.arrayToDataTable(	response["message"][11] );
+
+											var options = {
+												title: 'Long Packet Drop Intensity',
+												legend: { position: 'bottom' }
+											};
+
+											var chart1 = new google.visualization.LineChart(document.getElementById('pd_chart'));
+
+											chart1.draw(data, options);
+										}
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChart2);
+
+										function drawChart2() {
+											var data = google.visualization.arrayToDataTable( response["message"][12] );
+
+											var options = {
+												title: 'Short Packet Drop Intensity',
+												legend: { position: 'bottom' }
+											};
+
+											var chart2 = new google.visualization.LineChart(document.getElementById('pl_chart'));
+
+											chart2.draw(data, options);
+										}
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChart3);
+
+										function drawChart3() {
+											var data = google.visualization.arrayToDataTable( response["message"][13] );
+
+											var options = {
+												title: 'Echo/Reverb Intensity',
+												legend: { position: 'bottom' }
+											};
+
+											var chart3 = new google.visualization.LineChart(document.getElementById('echo_chart'));
+
+											chart3.draw(data, options);
+										}
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChartWind);
+										function drawChartWind() {
+											var data = google.visualization.arrayToDataTable( response["message"][14] );
+
+											var options = {
+												title: 'Background Noise - Wind',
+												curveType: 'function',
+												legend: { position: 'bottom' }
+											};
+											var chart = new google.visualization.LineChart(document.getElementById('wind_chart'));
+											chart.draw(data, options);
+										}
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChartBabble);
+										function drawChartBabble() {
+											var data = google.visualization.arrayToDataTable( response["message"][15] );
+											var options = {
+												title: 'Background Noise - Babble',
+												curveType: 'function',
+												legend: { position: 'bottom' }
+											};
+											var chart = new google.visualization.LineChart(document.getElementById('babble_chart'));
+											chart.draw(data, options);
+										}
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChartDrill);
+										function drawChartDrill() {
+											var data = google.visualization.arrayToDataTable( response["message"][16] );
+											var options = {
+												title: 'Background Noise - Drill',
+												curveType: 'function',
+												legend: { position: 'bottom' }
+											};
+											var chart = new google.visualization.LineChart(document.getElementById('drill_chart'));
+											chart.draw(data, options);
+										}
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChartAc);
+										function drawChartAc() {
+											var data = google.visualization.arrayToDataTable( response["message"][17] );
+											var options = {
+												title: 'Background Noise - Air Conditioner / Fan',
+												curveType: 'function',
+												legend: { position: 'bottom' }
+											};
+											var chart = new google.visualization.LineChart(document.getElementById('ac_chart'));
+											chart.draw(data, options);
+										}
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChartBark);
+										function drawChartBark() {
+											var data = google.visualization.arrayToDataTable( response["message"][18] );
+											var options = {
+												title: 'Background Noise - Barking Dog',
+												curveType: 'function',
+												legend: { position: 'bottom' }
+											};
+											var chart = new google.visualization.LineChart(document.getElementById('bark_chart'));
+											chart.draw(data, options);
+										}
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChartCar);
+										function drawChartCar() {
+											var data = google.visualization.arrayToDataTable( response["message"][19] );
+											var options = {
+												title: 'Background Noise - Car',
+												curveType: 'function',
+												legend: { position: 'bottom' }
+											};
+											var chart = new google.visualization.LineChart(document.getElementById('car_chart'));
+											chart.draw(data, options);
+										}
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChartSiren);
+										function drawChartSiren() {
+											var data = google.visualization.arrayToDataTable( response["message"][20] );
+											var options = {
+												title: 'Background Noise - Ambulance Siren',
+												curveType: 'function',
+												legend: { position: 'bottom' }
+											};
+											var chart = new google.visualization.LineChart(document.getElementById('siren_chart'));
+											chart.draw(data, options);
+										}
+
+										google.charts.load('current', {'packages':['corechart']});
+										google.charts.setOnLoadCallback(drawChartBand);
+										function drawChartBand() {
+											var data = google.visualization.arrayToDataTable( response["message"][21] );
+											var options = {
+												title: 'Dynamic Range Compression',
+												curveType: 'function',
+												legend: { position: 'bottom' }
+											};
+											var chart = new google.visualization.LineChart(document.getElementById('band_chart'));
+											chart.draw(data, options);
+										}
+
+									} else {
+											console.log('failed');
+									}
+								}
+							}
+
+			    </script>
+
+
+				</div>
+			</section>
+
+			<footer id="footer">
+				<div class="inner">
+					<div class="box alt">
+						<div class="row 100% uniform">
+							<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+							<div class="3u" ><span class="image fit"><a href="https://ece.illinois.edu/"><img src="../images/ECE_Logo_3.png" alt="" /></a></span></div>
+							<div class="3u" ><span class="image fit"><a href="https://www.c3sr.com/"><img src="../images/c3sr.png" alt="" /></a></span></div>
+							<div class="3u" ><span class="image fit"><img src="" alt="" /></span></div>
+						</div>
+					</div>
+
+					<div class="copyright">
+						<center><ul><br/><h3>For more news, analysis, and insights, follow us on: </h3>
+
+								<a href="https://www.linkedin.com/company/livesensus" class="icon fa-linkedin fa-2x"><span class="label">LinkedIn</span></a>
+								<span>&nbsp;</span>
+								<a href="https://www.facebook.com/LiveSensusSoftware/" class="icon fa-facebook fa-2x"><span class="label">Facebook</span></a>
+
+						</ul></center>
+						&copy; LiveSensus. Design: <a href="https://templated.co">TEMPLATED</a>. Images: <a href="https://unsplash.com">Unsplash</a>.
+					</div>
+
+				</div>
+			</footer>
+		<!-- Scripts -->
+			<script src="../assets/js/jquery.min.js"></script>
+			<script src="../assets/js/skel.min.js"></script>
+			<script src="../assets/js/util.js"></script>
+			<script src="../assets/js/main.js"></script>
+
+	</body>
+</html>
